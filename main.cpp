@@ -1,11 +1,14 @@
 #include "mainwindow.h"
+#include "addtransaction.h"
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+
+    Addtransaction w;
     w.show();
-    return QCoreApplication::exec();
+
+    return a.exec();
 }
