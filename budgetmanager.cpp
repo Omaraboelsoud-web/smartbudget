@@ -62,6 +62,14 @@ double BudgetManager::getTotalExpenses() const
     return total;
 }
 
+void BudgetManager::updateTransaction(int index, double amount, QString type, QString category)
+{
+    if (index < 0 || index >= transactions.size())
+        return;
+
+    transactions[index] = Transaction(amount, type, category, QDate::currentDate());
+}
+
 std::vector<Transaction> BudgetManager::getAllTransactions() const {
     return transactions;
 }

@@ -3,6 +3,7 @@
 #include <QDebug>
 #include "Transaction.h"
 #include <QDate>
+#include "history.h"
 
 Addtransaction::Addtransaction(QWidget *parent)
     : QWidget(parent)
@@ -11,6 +12,8 @@ Addtransaction::Addtransaction(QWidget *parent)
     ui->setupUi(this);
 
     connect(ui->pushButton, &QPushButton::clicked, this, &Addtransaction::onAddClicked);
+    connect(ui->historyButton, &QPushButton::clicked,
+            this, &Addtransaction::on_historyButton_clicked);
 }
 
 Addtransaction::~Addtransaction()
@@ -30,8 +33,29 @@ void Addtransaction::onAddClicked() {
     ui->incomeLabel->setText(QString::number(manager.getTotalIncome()));
     ui->expenseLabel->setText(QString::number(manager.getTotalExpenses()));
     ui->balanceLabel->setText(QString::number(manager.getBalance()));
-    qDebug() << "Income:" << manager.getTotalIncome();
-    qDebug() << "Expenses:" << manager.getTotalExpenses();
-    qDebug() << "Balance:" << manager.getBalance();
     qDebug() << "Transaction added!";
+}
+
+void Addtransaction::on_historyButton_clicked()
+{
+    if (!historyWindow) {
+        historyWindow = new History(this);
+        historyWindow->setManager(&manager);
+        connect(historyWindow, &QWidget::destroyed, this, &Addtransaction::onHistoryClosed);
+    }
+    historyWindow->setTransactions(manager.getAllTransactions());
+    historyWindow->show();
+    historyWindow->raise();
+    historyWindow->activateWindow();
+}
+void Addtransaction::refreshLabels()
+{
+    ui->incomeLabel->setText(QString::number(manager.getTotalIncome()));
+    ui->expenseLabel->setText(QString::number(manager.getTotalExpenses()));
+    ui->balanceLabel->setText(QString::number(manager.getBalance()));
+}
+void Addtransaction::onHistoryClosed()
+{
+    historyWindow = nullptr;
+    refreshLabels();
 }

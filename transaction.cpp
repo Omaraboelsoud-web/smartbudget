@@ -1,5 +1,5 @@
 #include "transaction.h"
-
+#include "history.h"
 Transaction::Transaction(double amount, QString type, QString category, QDate date)
     : amount(amount), type(type), category(category), date(date) {}
 

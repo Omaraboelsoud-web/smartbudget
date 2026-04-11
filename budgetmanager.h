@@ -10,12 +10,9 @@ private:
 
 public:
     BudgetManager();
-
-    // core functions
     void addTransaction(const Transaction& t);
     void removeTransaction(int index);
-
-    // calculations
+    void updateTransaction(int index, double amount, QString type, QString category);
     double getBalance() const;
     double getTotalIncome() const;
     double getTotalExpenses() const;
