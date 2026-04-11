@@ -21,4 +21,4 @@ private:
     Ui::Addtransaction *ui;
 };
 
-#endif // ADDTRANSACTION_H
+#endif
