@@ -1,8 +1,7 @@
 #ifndef ADDTRANSACTION_H
 #define ADDTRANSACTION_H
-
 #include <QWidget>
-
+#include "BudgetManager.h"
 namespace Ui {
 class Addtransaction;
 }
@@ -19,6 +18,7 @@ public:
 
 private:
     Ui::Addtransaction *ui;
+     BudgetManager manager;
 };
 
 #endif

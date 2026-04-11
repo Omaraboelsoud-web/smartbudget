@@ -1,7 +1,7 @@
 #include "BudgetManager.h"
 
 BudgetManager::BudgetManager() {
-    // nothing needed for now (vector starts empty automatically)
+
 }
 
 void BudgetManager::addTransaction(const Transaction& t) {
@@ -14,13 +14,20 @@ void BudgetManager::removeTransaction(int index) {
     }
 }
 
-double BudgetManager::getBalance() const {
+double BudgetManager::getBalance() const
+{
     double balance = 0;
 
-    for (const Transaction& t : transactions) {
-        if (t.getType() == "income") {
+    for (const Transaction& t : transactions)
+    {
+        QString type = t.getType().trimmed().toLower();
+
+        if (type == "income")
+        {
             balance += t.getAmount();
-        } else if (t.getType() == "expense") {
+        }
+        else if (type == "expense")
+        {
             balance -= t.getAmount();
         }
     }
@@ -40,11 +47,14 @@ double BudgetManager::getTotalIncome() const {
     return total;
 }
 
-double BudgetManager::getTotalExpenses() const {
+double BudgetManager::getTotalExpenses() const
+{
     double total = 0;
 
-    for (const Transaction& t : transactions) {
-        if (t.getType() == "expense") {
+    for (const Transaction& t : transactions)
+    {
+        if (t.getType().trimmed().toLower() == "expense")
+        {
             total += t.getAmount();
         }
     }

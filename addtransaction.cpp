@@ -1,6 +1,8 @@
 #include "addtransaction.h"
 #include "ui_addtransaction.h"
 #include <QDebug>
+#include "Transaction.h"
+#include <QDate>
 
 Addtransaction::Addtransaction(QWidget *parent)
     : QWidget(parent)
@@ -18,12 +20,18 @@ Addtransaction::~Addtransaction()
 
 void Addtransaction::onAddClicked() {
 
-    QString amountText = ui->amountInput->text();
+    double amount = ui->amountInput->text().toDouble();
     QString type = ui->comboBox->currentText();
     QString category = ui->categoryInput->text();
 
-    qDebug() << "Amount:" << amountText;
-    qDebug() << "Type:" << type;
-    qDebug() << "Category:" << category;
-    qDebug() << "Button clicked!";
+    Transaction t(amount, type, category, QDate::currentDate());
+    manager.addTransaction(t);
+
+    ui->incomeLabel->setText(QString::number(manager.getTotalIncome()));
+    ui->expenseLabel->setText(QString::number(manager.getTotalExpenses()));
+    ui->balanceLabel->setText(QString::number(manager.getBalance()));
+    qDebug() << "Income:" << manager.getTotalIncome();
+    qDebug() << "Expenses:" << manager.getTotalExpenses();
+    qDebug() << "Balance:" << manager.getBalance();
+    qDebug() << "Transaction added!";
 }
