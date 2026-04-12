@@ -73,3 +73,12 @@ void BudgetManager::updateTransaction(int index, double amount, QString type, QS
 std::vector<Transaction> BudgetManager::getAllTransactions() const {
     return transactions;
 }
+void BudgetManager::setBudget(const QString& category, double amount)
+{
+    categoryBudgets[category] = amount;
+}
+
+double BudgetManager::getBudget(const QString& category) const
+{
+    return categoryBudgets.value(category, 0);
+}

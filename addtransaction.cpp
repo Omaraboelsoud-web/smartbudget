@@ -43,12 +43,12 @@ void Addtransaction::on_historyButton_clicked()
         historyWindow = new History();
 
         historyWindow->setManager(&manager);
-        historyWindow->setMainWindow(this);   // 🔥 IMPORTANT
+        historyWindow->setMainWindow(this);
     }
 
     historyWindow->setTransactions(manager.getAllTransactions());
     historyWindow->show();
-    this->hide();;
+    this->hide();
 }
 void Addtransaction::refreshLabels()
 {
