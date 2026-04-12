@@ -3,6 +3,7 @@
 #include <QWidget>
 #include "BudgetManager.h"
 #include "history.h"
+
 namespace Ui {
 class History;
 class Addtransaction;
@@ -15,6 +16,7 @@ private slots:
     void onAddClicked();
     void on_historyButton_clicked();
     void onHistoryClosed();
+    void on_summaryButton_clicked();
 public:
     explicit Addtransaction(QWidget *parent = nullptr);
     ~Addtransaction();

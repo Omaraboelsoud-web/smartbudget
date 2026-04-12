@@ -15,6 +15,7 @@ qt_add_executable(SmartBudget
     budgetmanager.h budgetmanager.cpp
     addtransaction.h addtransaction.cpp addtransaction.ui
     history.h history.cpp history.ui
+    statistics.h statistics.cpp statistics.ui
 )
 
 target_link_libraries(SmartBudget

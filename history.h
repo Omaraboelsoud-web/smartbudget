@@ -4,6 +4,7 @@
 #include "transaction.h"
 #include <QWidget>
 #include "budgetmanager.h"
+class Addtransaction;
 namespace Ui {
 class History;
 }
@@ -18,6 +19,7 @@ private slots:
 public:
     explicit History(QWidget *parent = nullptr);
     void setManager(BudgetManager* m);
+    void setMainWindow(Addtransaction* w);
     ~History();
 public:
     void setTransactions(const std::vector<Transaction>& transactions);
@@ -25,6 +27,7 @@ private:
     Ui::History *ui;
     BudgetManager* manager;
     void refreshTable();
+    Addtransaction* mainWindow = nullptr;
 };
 
 #endif // HISTORY_H

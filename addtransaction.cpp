@@ -4,6 +4,7 @@
 #include "Transaction.h"
 #include <QDate>
 #include "history.h"
+#include "statistics.h"
 
 Addtransaction::Addtransaction(QWidget *parent)
     : QWidget(parent)
@@ -12,8 +13,8 @@ Addtransaction::Addtransaction(QWidget *parent)
     ui->setupUi(this);
 
     connect(ui->pushButton, &QPushButton::clicked, this, &Addtransaction::onAddClicked);
-    connect(ui->historyButton, &QPushButton::clicked,
-            this, &Addtransaction::on_historyButton_clicked);
+    connect(ui->historyButton, &QPushButton::clicked, this, &Addtransaction::on_historyButton_clicked);
+    connect(ui->Summary, &QPushButton::clicked, this, &Addtransaction::on_summaryButton_clicked);
 }
 
 Addtransaction::~Addtransaction()
@@ -25,7 +26,7 @@ void Addtransaction::onAddClicked() {
 
     double amount = ui->amountInput->text().toDouble();
     QString type = ui->comboBox->currentText();
-    QString category = ui->categoryInput->text();
+    QString category = ui->categoryBox->currentText();
 
     Transaction t(amount, type, category, QDate::currentDate());
     manager.addTransaction(t);
@@ -39,14 +40,15 @@ void Addtransaction::onAddClicked() {
 void Addtransaction::on_historyButton_clicked()
 {
     if (!historyWindow) {
-        historyWindow = new History(this);
+        historyWindow = new History();
+
         historyWindow->setManager(&manager);
-        connect(historyWindow, &QWidget::destroyed, this, &Addtransaction::onHistoryClosed);
+        historyWindow->setMainWindow(this);   // 🔥 IMPORTANT
     }
+
     historyWindow->setTransactions(manager.getAllTransactions());
     historyWindow->show();
-    historyWindow->raise();
-    historyWindow->activateWindow();
+    this->hide();;
 }
 void Addtransaction::refreshLabels()
 {
@@ -58,4 +60,14 @@ void Addtransaction::onHistoryClosed()
 {
     historyWindow = nullptr;
     refreshLabels();
+}
+void Addtransaction::on_summaryButton_clicked()
+{
+    statistics *s = new statistics();
+
+    s->setManager(&manager);
+    s->setMainWindow(this);
+
+    s->show();
+    this->hide();
 }
