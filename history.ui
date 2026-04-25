@@ -55,6 +55,11 @@
      <string>Date</string>
     </property>
    </column>
+   <column>
+    <property name="text">
+     <string>Currency</string>
+    </property>
+   </column>
   </widget>
   <widget class="QPushButton" name="deleteButton">
    <property name="geometry">

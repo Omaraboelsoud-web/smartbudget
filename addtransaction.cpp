@@ -1,10 +1,10 @@
 #include "addtransaction.h"
 #include "ui_addtransaction.h"
 #include <QDebug>
-#include "Transaction.h"
 #include <QDate>
 #include "history.h"
 #include "statistics.h"
+#include "transaction.h"
 
 Addtransaction::Addtransaction(QWidget *parent)
     : QWidget(parent)
@@ -12,9 +12,16 @@ Addtransaction::Addtransaction(QWidget *parent)
 {
     ui->setupUi(this);
 
-    connect(ui->pushButton, &QPushButton::clicked, this, &Addtransaction::onAddClicked);
-    connect(ui->historyButton, &QPushButton::clicked, this, &Addtransaction::on_historyButton_clicked);
-    connect(ui->Summary, &QPushButton::clicked, this, &Addtransaction::on_summaryButton_clicked);
+    connect(ui->pushButton, &QPushButton::clicked,
+            this, &Addtransaction::onAddClicked);
+
+    connect(ui->historyButton, &QPushButton::clicked,
+            this, &Addtransaction::on_historyButton_clicked);
+
+    connect(ui->Summary, &QPushButton::clicked,
+            this, &Addtransaction::on_summaryButton_clicked);
+    connect(ui->comboDisplayCurrency, &QComboBox::currentTextChanged,
+            this, &Addtransaction::onDisplayCurrencyChanged);
 }
 
 Addtransaction::~Addtransaction()
@@ -22,26 +29,24 @@ Addtransaction::~Addtransaction()
     delete ui;
 }
 
-void Addtransaction::onAddClicked() {
-
+void Addtransaction::onAddClicked()
+{
     double amount = ui->amountInput->text().toDouble();
     QString type = ui->comboBox->currentText();
     QString category = ui->categoryBox->currentText();
+    QString currency = ui->comboCurrency->currentText();
 
-    Transaction t(amount, type, category, QDate::currentDate());
+    Transaction t(amount, type, category, QDate::currentDate(), currency);
     manager.addTransaction(t);
 
-    ui->incomeLabel->setText(QString::number(manager.getTotalIncome()));
-    ui->expenseLabel->setText(QString::number(manager.getTotalExpenses()));
-    ui->balanceLabel->setText(QString::number(manager.getBalance()));
-    qDebug() << "Transaction added!";
+    refreshLabels();
 }
 
 void Addtransaction::on_historyButton_clicked()
 {
-    if (!historyWindow) {
+    if (!historyWindow)
+    {
         historyWindow = new History();
-
         historyWindow->setManager(&manager);
         historyWindow->setMainWindow(this);
     }
@@ -50,24 +55,40 @@ void Addtransaction::on_historyButton_clicked()
     historyWindow->show();
     this->hide();
 }
-void Addtransaction::refreshLabels()
+
+void Addtransaction::on_summaryButton_clicked()
 {
-    ui->incomeLabel->setText(QString::number(manager.getTotalIncome()));
-    ui->expenseLabel->setText(QString::number(manager.getTotalExpenses()));
-    ui->balanceLabel->setText(QString::number(manager.getBalance()));
+    statistics* s = new statistics();
+    s->setManager(&manager);
+    s->setMainWindow(this);
+    s->show();
+    this->hide();
 }
+
 void Addtransaction::onHistoryClosed()
 {
     historyWindow = nullptr;
     refreshLabels();
 }
-void Addtransaction::on_summaryButton_clicked()
+void Addtransaction::onDisplayCurrencyChanged()
 {
-    statistics *s = new statistics();
+    displayCurrency = ui->comboDisplayCurrency->currentText();
+    refreshLabels();
+}
+void Addtransaction::refreshLabels()
+{
+    double income = manager.getTotalIncome();
+    double expense = manager.getTotalExpenses();
+    double balance = manager.getBalance();
 
-    s->setManager(&manager);
-    s->setMainWindow(this);
 
-    s->show();
-    this->hide();
+    if (displayCurrency == "Display-EGP") {
+        income *= 50;
+        expense *= 50;
+        balance *= 50;
+    }
+
+    ui->incomeLabel->setText(QString::number(income) + " " + displayCurrency);
+    ui->expenseLabel->setText(QString::number(expense) + " " + displayCurrency);
+    ui->balanceLabel->setText(QString::number(balance) + " " + displayCurrency);
 }

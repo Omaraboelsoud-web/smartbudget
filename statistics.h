@@ -18,7 +18,7 @@ public:
     void setManager(BudgetManager* m);
     ~statistics();
     void setMainWindow(Addtransaction* w);
-
+    void updateUI(double diff);
 private:
     Ui::statistics *ui;
     BudgetManager* manager = nullptr;
@@ -30,4 +30,4 @@ private slots:
 };
 
 
-#endif // STATISTICS_H
+#endif

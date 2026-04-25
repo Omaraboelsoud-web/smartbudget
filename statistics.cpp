@@ -1,12 +1,12 @@
 #include "statistics.h"
 #include "ui_statistics.h"
-
+#include <QMessageBox>
 #include <QMap>
 #include <QDate>
-
 #include "budgetmanager.h"
 #include "transaction.h"
 #include "addtransaction.h"
+#include "budgetmanager.h"
 
 statistics::statistics(QWidget *parent)
     : QWidget(parent)
@@ -181,7 +181,23 @@ void statistics::on_back1Button_clicked()
         mainWindow->show();
 }
 
+void statistics::updateUI(double diff)
+{
+    if (diff < 0) {
+        ui->remainingFood->setStyleSheet("color: red; font-weight: bold;");
+    }
+    else {
+        ui->remainingFood->setStyleSheet("color: green;");
+    }
+
+    if (diff < 0) {
+        QMessageBox::warning(this,
+                             "Budget Alert",
+                             "You exceeded your Food budget!");
+    }
+}
 statistics::~statistics()
 {
     delete ui;
 }
+

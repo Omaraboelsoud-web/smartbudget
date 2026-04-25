@@ -12,12 +12,13 @@ private:
     QDate date;
 
 public:
-    Transaction(double amount, QString type, QString category, QDate date);
-
+    Transaction(double amount, QString type, QString category, QDate date, QString currency);
+    QString currency;
     double getAmount() const;
     QString getType() const;
     QString getCategory() const;
     QDate getDate() const;
+    QString getCurrency() const;
 };
 
 #endif
