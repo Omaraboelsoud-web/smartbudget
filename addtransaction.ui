@@ -313,17 +313,17 @@
    </property>
    <item>
     <property name="text">
-     <string>Display</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Display-EGP</string>
+     <string>Currency</string>
     </property>
    </item>
    <item>
     <property name="text">
      <string>Display-USD</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Display-EGP</string>
     </property>
    </item>
   </widget>
